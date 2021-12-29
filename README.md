@@ -1,2 +1,2 @@
 # OJ_Status
-A Crawler that can auto gather imformation from mainstream OJ platform.
+A Crawler that can auto gather information from mainstream OJ platform.
