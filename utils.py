@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from prettytable import PrettyTable
+
+
+class setting:
+    calendar_url = "https://contests.sdutacm.cn/contests.json"
 
 
 def getHTMLText(url):
@@ -29,27 +32,29 @@ def getHTMLText(url):
         return "connect error"
 
 
-class Calendar:
-    url = "https://contests.sdutacm.cn/contests.json"
+def isChinese(str):
+    for i in str:
+        if i >= '\u4e00' and i <= '\u9fa5':
+            return True
+    return False
 
-    def getCalendar(url=url):
-        t = PrettyTable(["Id", "Name", "Source", "start_time", "end_time", "link"])
-        ls = eval(getHTMLText(url))
 
-        for i in range(len(ls)):
-            dic = ls[i]
-
-            t.add_row(
-                [
-                    i + 1,
-                    dic["name"][:25],
-                    dic["source"],
-                    dic["start_time"].replace("T", " ").replace("+", "~"),
-                    dic["end_time"].replace("T", " ").replace("+", "~"),
-                    dic["link"]
-                ]
-            )
-        t.align = "l"
-        return t
+def getCalendar(url):
+    ls = eval(getHTMLText(url))
+    return ls
+    # for i in range(len(ls)):
+    #     dic = ls[i]
+    #
+    #     t.add_row(
+    #         [
+    #             i + 1,
+    #             dic["name"],
+    #             dic["source"],
+    #             dic["start_time"].replace("T", " ").replace("+", "~"),
+    #             dic["end_time"].replace("T", " ").replace("+", "~"),
+    #             dic["link"]
+    #         ]
+    #     )
+    # return t.draw()
 
 # print(Calendar.getCalendar())
