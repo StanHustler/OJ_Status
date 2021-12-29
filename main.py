@@ -13,14 +13,14 @@ def main():
     def displayCalendar():
         viewCalendar = tk.Tk()
         viewCalendar.title("Competition Calendar")
-        viewCalendar.geometry('1143x427')
+        viewCalendar.geometry('1083x427')
         tree = ttk.Treeview(viewCalendar, show="headings",height=20,
                             columns=("id", "name", "source", "start_time", "end_time", "link"))
         tree.column("id", width=40, anchor="center")
         tree.column("name", width=350, anchor="center")
         tree.column("source", width=100, anchor="center")
-        tree.column("start_time", width=175, anchor="center")
-        tree.column("end_time", width=175, anchor="center")
+        tree.column("start_time", width=145, anchor="center")
+        tree.column("end_time", width=145, anchor="center")
         tree.column("link", width=300, anchor="center")
 
         tree.heading("id", text="ID")
@@ -37,8 +37,8 @@ def main():
                 i + 1,
                 dic["name"],
                 dic["source"],
-                dic["start_time"].replace("T", " ").replace("+", "~"),
-                dic["end_time"].replace("T", " ").replace("+", "~"),
+                dic["start_time"].replace("T", " ").split("+")[0],
+                dic["end_time"].replace("T", " ").split("+")[0],
                 dic["link"]
             ))
         tree.pack()
