@@ -1,11 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import datetime
+import time
+import json
 
 
 class setting:
     ##calendar##
-    calendar_url = "https://ac.nowcoder.com/acm/contest/calendar"
+    calendar_url = "https://ac.nowcoder.com/acm/calendar/contest?token=&month="
     ##rank##
     atcoder_rank = "https://atcoder.jp/ranking"
     wlacm_rank = "http://wlacm.com/ranklist.php"
@@ -36,8 +39,7 @@ def getHTMLText(url, *cookie):
             'Sec-Fetch-Mode': 'navigate',
             'Sec-Fetch-User': '?1',
             'Sec-Fetch-Dest': 'document',
-            'Referer': 'https://www.baidu.com/link?url=nV__VLzaxpWPJBmpmsyh_0ZOHmnauP8Qm4cDGfbb0Um3COrclHlbrr4FDfBJBzqU_bbMhuUsRpC7iqjskDMbkq&wd=&eqid=e43c8e050005decb0000000561cc5120',
-            'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
+            'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
         }
         if len(cookie) != 0:
             headers['cookie'] = cookie[0]
@@ -56,13 +58,34 @@ def isChinese(str):
     return False
 
 
-def getCalendar():
-    dic={}
-    html = getHTMLText(setting.calendar_url)
-    soup = BeautifulSoup(html, "html.parser")
-    print(soup)
-    # dic['current-mouth'] = soup("span",{"class":"current-mouth"})[0].text
-    return dic
+def timestamp2time(timestamp):
+    time_local = time.localtime(int(timestamp))
+    dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
+    return dt
+
+
+def nowMonth():
+    # date format: yyyy-mm
+    res = str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month)
+    return res
+
+
+def timeStamp():
+    second = '{:.3f}'.format(time.time())
+    second = str(second).replace(".", "")
+    return second
+
+
+class Calendar:
+
+    def __init__(self, date, second):
+        self.date = date
+        self.second = second
+
+    def getCalendar(self):
+        html = getHTMLText(setting.calendar_url + self.date+"&_="+self.second)
+        data=json.loads(html)['data']
+        return data
 
 
 def getRanking(OJ):
@@ -197,4 +220,4 @@ def getSearch(username):
         pass
     return res
 
-print(getSearch("zwu_2018010782"))
+

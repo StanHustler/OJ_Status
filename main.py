@@ -2,6 +2,7 @@ import os
 from tkinter import *
 import tkinter.messagebox
 from tkinter import ttk
+import time
 import utils
 
 
@@ -24,17 +25,18 @@ def displayCalendar():
     tree.heading("start_time", text="Start time")
     tree.heading("end_time", text="End time")
     tree.heading("link", text="Link")
-    ls = utils.getCalendar()
+    calendar = utils.Calendar(utils.nowMonth(),utils.timeStamp())
+    ls=calendar.getCalendar()
     for i in range(len(ls)):
         dic = ls[i]
 
         tree.insert("", "end", values=(
             i + 1,
-            dic["name"],
-            dic["source"],
-            dic["start_time"].replace("T", " ").split("+")[0],
-            dic["end_time"].replace("T", " ").split("+")[0],
-            dic["link"]
+            dic["contestName"],
+            dic["ojName"],
+            utils.timestamp2time(str(dic["startTime"])[:-3]),
+            utils.timestamp2time(str(dic["endTime"])[:-3]),
+            dic["link"].split("?")[0]
         ))
     tree.pack()
     viewCalendar.mainloop()
