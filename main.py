@@ -49,8 +49,8 @@ def displayRanking():
 
     tree = ttk.Treeview(viewRanking, show="headings", height=18, columns=("#1", "#2", "#3", "#4"))
     tree.column("#1", width=50, anchor="center")
-    tree.column("#2", width=100, anchor="center")
-    tree.column("#3", width=600, anchor="center")
+    tree.column("#2", width=200, anchor="center")
+    tree.column("#3", width=500, anchor="center")
     tree.column("#4", width=50, anchor="center")
 
     def dis_atcoder():
@@ -105,11 +105,29 @@ def displayRanking():
             tree.insert("", "end", values=(lls[0], lls[1], lls[2], lls[3]))
         tree.pack()
 
+    def dis_codeforces():
+        try:
+            x = tree.get_children()
+            for item in x:
+                tree.delete(item)
+        except:
+            pass
+        tree.heading("#1", text="No")
+        tree.heading("#2", text="Username")
+        tree.heading("#3", text="Number of participation")
+        tree.heading("#4", text="Rating")
+        ls = utils.getRanking("codeforces")
+        for i in range(30):
+            lls = ls[i]
+            tree.insert("", "end", values=(lls[0], lls[1], lls[2], lls[3]))
+        tree.pack()
+
     dis_wlacm()
 
-    Button(viewRanking, text="wlacm", width=30, height=2, relief=GROOVE, command=dis_wlacm).place(x=0, y=387)
-    Button(viewRanking, text="atcoder", width=30, height=2, relief=GROOVE, command=dis_atcoder).place(x=220, y=387)
-    Button(viewRanking, text="nowcoder", width=30, height=2, relief=GROOVE, command=dis_nowcoder).place(x=440, y=387)
+    Button(viewRanking, text="wlacm", width=27, height=2, relief=GROOVE, command=dis_wlacm).place(x=0, y=387)
+    Button(viewRanking, text="atcoder", width=27, height=2, relief=GROOVE, command=dis_atcoder).place(x=201, y=387)
+    Button(viewRanking, text="nowcoder", width=27, height=2, relief=GROOVE, command=dis_nowcoder).place(x=401, y=387)
+    Button(viewRanking, text="codeforces", width=27, height=2, relief=GROOVE, command=dis_codeforces).place(x=601, y=387)
     viewRanking.mainloop()
 
 def displayAC():
@@ -153,9 +171,29 @@ def displayAC():
     Button(viewRanking, text="wlacm", width=30, height=2, relief=GROOVE, command=dis_wlacm).place(x=0, y=387)
     viewRanking.mainloop()
 
+def displaySearch():
+    viewSearch = Tk()
+    viewSearch.title("Ranking Board")
+    viewSearch.geometry('553x433')
+    viewSearch.minsize(553, 433)
+    viewSearch.maxsize(553, 433)
 
+    def onClick():
+        E1.get()
+        #
 
+    tree = ttk.Treeview(viewSearch, show="headings", height=18, columns=("#1", "#2", "#3", "#4", "#5", "#6"))
+    tree.column("#1", width=50, anchor="center")
+    tree.column("#2", width=100, anchor="center")
+    tree.column("#3", width=100, anchor="center")
+    tree.column("#4", width=50, anchor="center")
+    tree.column("#5", width=100, anchor="center")
+    tree.column("#6", width=150, anchor="center")
 
+    E1=Entry(viewSearch,text="please input username")
+    E1.place(x=0, y=387)
+    Button(viewSearch, text="Search", width=30, height=2, relief=GROOVE, command=onClick).place(x=200, y=387)
+    viewSearch.mainloop()
 
 
 
@@ -165,12 +203,10 @@ def main():
     window.geometry('300x230')
 
     Label(window, text="=== MENU ===").pack()
-    Button(window, text="Competition Calendar", width=30, height=2, pady=1, relief=GROOVE,
-           command=displayCalendar).pack()
-    Button(window, text="Ranking Board", width=30, height=2, relief=GROOVE,
-           command=displayRanking).pack()
-    Button(window, text="AC status", width=30, height=2, relief=GROOVE,
-           command=displayAC).pack()
+    Button(window, text="Competition Calendar", width=30, height=2, relief=GROOVE,command=displayCalendar).pack()
+    Button(window, text="Ranking Board", width=30, height=2, relief=GROOVE,command=displayRanking).pack()
+    Button(window, text="AC status", width=30, height=2, relief=GROOVE,command=displayAC).pack()
+    Button(window, text="Search", width=30, height=2, relief=GROOVE, command=displaySearch).pack()
     window.mainloop()
 
 

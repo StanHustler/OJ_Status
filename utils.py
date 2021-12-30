@@ -9,11 +9,14 @@ class setting:
     atcoder_rank = "https://atcoder.jp/ranking"
     wlacm_rank = "http://wlacm.com/ranklist.php"
     nowcoder_rank = "https://ac.nowcoder.com/acm/contest/rating-index"
+    codeforces_rank = "https://codeforces.com/ratings"
     ##AC##
-    wlacm_AC="http://wlacm.com/status.php?&jresult=4"
+    wlacm_AC = "http://wlacm.com/status.php?&jresult=4"
+    # PTA_AC = "https://pintia.cn/problem-sets/1470579156098625536/submissions"
+    # nowcoder_AC = "https://ac.nowcoder.com/acm/contest/26012#submit"
 
 
-def getHTMLText(url):
+def getHTMLText(url, *cookie):
     try:
         headers = {
             'Connection': 'keep-alive',
@@ -31,6 +34,8 @@ def getHTMLText(url):
             'Referer': 'https://www.baidu.com/link?url=nV__VLzaxpWPJBmpmsyh_0ZOHmnauP8Qm4cDGfbb0Um3COrclHlbrr4FDfBJBzqU_bbMhuUsRpC7iqjskDMbkq&wd=&eqid=e43c8e050005decb0000000561cc5120',
             'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
         }
+        if len(cookie) != 0:
+            headers['cookie'] = cookie[0]
         r = requests.get(url, timeout=30, headers=headers)
         r.raise_for_status()
         r.encoding = r.apparent_encoding
@@ -79,7 +84,7 @@ def getRanking(OJ):
                     frag[3].text
                 ]
             )
-    elif OJ=="nowcoder":
+    elif OJ == "nowcoder":
         html = getHTMLText(setting.nowcoder_rank)
         soup = BeautifulSoup(html, "html.parser")
         for i in range(len(soup.tbody("tr"))):
@@ -92,12 +97,28 @@ def getRanking(OJ):
                     frag[4].text
                 ]
             )
-
+    elif OJ == "codeforces":
+        html = getHTMLText(setting.codeforces_rank)
+        soup = BeautifulSoup(html, "html.parser")
+        frag = soup("div", {"class": "datatable ratingsDatatable"})[0]("tr")[1]("td")
+        for i in range(0, len(frag), 4):
+            try:
+                ls.append(
+                    [
+                        frag[0 + i].text.strip(),
+                        frag[1 + i].text.strip(),
+                        frag[2 + i].text.strip(),
+                        frag[3 + i].text.strip()
+                    ]
+                )
+            except:
+                pass
     return ls
 
+
 def getAC(OJ):
-    ls=[]
-    if OJ=="wlacm":
+    ls = []
+    if OJ == "wlacm":
         html = getHTMLText(setting.wlacm_AC)
         soup = BeautifulSoup(html, "html.parser")
         for i in range(len(soup.tbody("tr"))):
@@ -112,6 +133,14 @@ def getAC(OJ):
                     frag[8].text
                 ]
             )
+    # TODO
+    # elif OJ == "PTA":
+    #     with open("cookies.json", "r") as f:
+    #         cookie = eval(f.read())["PTA"]
+    #     html = getHTMLText(setting.PTA_AC, cookie)
+    #     soup = BeautifulSoup(html, "html.parser")
+    #     return soup
     return ls
 
-# print(getAC("wlacm"))
+
+# print(getRanking("codeforces"))
