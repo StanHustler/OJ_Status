@@ -14,6 +14,8 @@ class setting:
     wlacm_AC = "http://wlacm.com/status.php?&jresult=4"
     # PTA_AC = "https://pintia.cn/problem-sets/1470579156098625536/submissions"
     # nowcoder_AC = "https://ac.nowcoder.com/acm/contest/26012#submit"
+    ##search##
+    atcoder_search = "https://atcoder.jp/users/"
 
 
 def getHTMLText(url, *cookie):
@@ -143,4 +145,25 @@ def getAC(OJ):
     return ls
 
 
-# print(getRanking("codeforces"))
+def getSearch(username):
+    res = {}
+
+    # atcoder
+    html = getHTMLText(setting.atcoder_search + username)
+    soup = BeautifulSoup(html, "html.parser")
+    try:
+        src = soup("table", {"class": "dl-table"})[1]("tr")
+        res["atcoder"] = [
+            soup("a", {"class": "username"})[0].text,  # username
+            src[0].td.text,  # rank
+            src[1].td.text.replace("\n",""),  # rating
+            src[3].td.text  # match
+        ]
+    except:
+        pass
+
+
+    return res
+
+
+# print(getSearch("zwu2019015009"))
