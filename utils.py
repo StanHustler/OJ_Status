@@ -18,6 +18,7 @@ class setting:
     ##search##
     atcoder_search = "https://atcoder.jp/users/"
     wlacm_search = "http://wlacm.com/userinfo.php?user="
+    codeforces_search = "https://codeforces.com/profile/"
 
 
 def getHTMLText(url, *cookie):
@@ -179,7 +180,17 @@ def getSearch(username):
     except:
         pass
 
+    # codeforces
+    html = getHTMLText(setting.codeforces_search + username)
+    soup = BeautifulSoup(html, "html.parser")
+    try:
+        res["codeforces"] = [
+            username,  # username
+            soup("span", {"style": "font-weight:bold;"})[0].text,  # rating
+            soup("div", {"class": "_UserActivityFrame_counterValue"})[0].text.split()[0],  # AC
+        ]
+    except:
+        pass
     return res
 
-
-# print(getSearch("zwu2019015009"))
+# print(getSearch("zwu2019014737"))

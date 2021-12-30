@@ -178,9 +178,9 @@ def displayAC():
 def displaySearch():
     viewSearch = Tk()
     viewSearch.title("Search")
-    viewSearch.geometry('600x433')
-    viewSearch.minsize(600, 433)
-    viewSearch.maxsize(600, 433)
+    viewSearch.geometry('600x185')
+    viewSearch.minsize(600, 185)
+    viewSearch.maxsize(600, 185)
 
     def onClick():
         res=utils.getSearch(E1.get())
@@ -226,11 +226,28 @@ def displaySearch():
             tree1.insert("", "end", values=(['No Result']))
         tree1.pack()
 
+        if "codeforces" in res.keys():
+            tree2 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4"))
+            tree2.column("#1", width=100, anchor="center")
+            tree2.column("#2", width=300, anchor="center")
+            tree2.column("#3", width=100, anchor="center")
+            tree2.column("#4", width=100, anchor="center")
+            tree2.heading("#1", text="OJ")
+            tree2.heading("#2", text="username")
+            tree2.heading("#3", text="Rating")
+            tree2.heading("#4", text="AC")
+            tree2.insert("", "end", values=(['codeforces'] + res["codeforces"]))
+        else:
+            tree2 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1"))
+            tree2.column("#1", width=600, anchor="center")
+            tree2.heading("#1", text="codeforces")
+            tree2.insert("", "end", values=(['No Result']))
+        tree2.pack()
 
 
-    E1 = Entry(viewSearch, text="please input username")
-    E1.place(x=0, y=387)
-    Button(viewSearch, text="Search", width=30, height=2, relief=GROOVE, command=onClick).place(x=200, y=387)
+    E1 = Entry(viewSearch)
+    E1.place(x=0, y=141,width=400, height=47)
+    Button(viewSearch, text="Search", width=30, height=2, relief=GROOVE, command=onClick).place(x=400, y=141)
     viewSearch.mainloop()
 
 
