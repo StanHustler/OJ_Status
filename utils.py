@@ -6,6 +6,7 @@ class setting:
     calendar_url = "https://contests.sdutacm.cn/contests.json"
     atcoder_rank = "https://atcoder.jp/ranking"
     wlacm_rank = "http://wlacm.com/ranklist.php"
+    nowcoder_rank = "https://ac.nowcoder.com/acm/contest/rating-index"
 
 
 def getHTMLText(url):
@@ -74,7 +75,21 @@ def getRanking(OJ="wlacm"):
                     frag[3].text
                 ]
             )
+    elif OJ=="nowcoder":
+        html = getHTMLText(setting.nowcoder_rank)
+        soup = BeautifulSoup(html, "html.parser")
+        for i in range(len(soup.tbody("tr"))):
+            frag = soup.tbody("tr")[i]("td")
+            ls.append(
+                [
+                    frag[0].text.strip(),
+                    frag[1].span.text,
+                    frag[2].text.strip("\n"),
+                    frag[4].text
+                ]
+            )
+
     return ls
 
 
-# print(getRanking())
+# print(getRanking("nowcoder"))

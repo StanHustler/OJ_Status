@@ -87,10 +87,29 @@ def displayRanking():
             lls = ls[i]
             tree.insert("", "end", values=(lls[0], lls[1], lls[2], lls[3]))
         tree.pack()
+
+    def dis_nowcoder():
+        try:
+            x = tree.get_children()
+            for item in x:
+                tree.delete(item)
+        except:
+            pass
+        tree.heading("#1", text="No")
+        tree.heading("#2", text="Username")
+        tree.heading("#3", text="University")
+        tree.heading("#4", text="Rating")
+        ls = utils.getRanking("nowcoder")
+        for i in range(30):
+            lls = ls[i]
+            tree.insert("", "end", values=(lls[0], lls[1], lls[2], lls[3]))
+        tree.pack()
+
     dis_wlacm()
-    Button(viewRanking, text="atcoder", width=30, height=2, command=dis_atcoder).place(x=0, y=387)
-    Button(viewRanking, text="wlacm", width=10, height=2, command=dis_wlacm).place(x=220, y=387)
-    # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
+
+    Button(viewRanking, text="wlacm", width=30, height=2,relief=GROOVE, command=dis_wlacm).place(x=0, y=387)
+    Button(viewRanking, text="atcoder", width=30, height=2,relief=GROOVE, command=dis_atcoder).place(x=220, y=387)
+    Button(viewRanking, text="nowcoder", width=30, height=2,relief=GROOVE, command=dis_nowcoder).place(x=440, y=387)
     # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
     # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
     viewRanking.mainloop()
