@@ -5,7 +5,7 @@ import re
 
 class setting:
     ##calendar##
-    calendar_url = "https://contests.sdutacm.cn/contests.json"
+    calendar_url = "https://ac.nowcoder.com/acm/contest/calendar"
     ##rank##
     atcoder_rank = "https://atcoder.jp/ranking"
     wlacm_rank = "http://wlacm.com/ranklist.php"
@@ -57,8 +57,12 @@ def isChinese(str):
 
 
 def getCalendar():
-    ls = eval(getHTMLText(setting.calendar_url))
-    return ls
+    dic={}
+    html = getHTMLText(setting.calendar_url)
+    soup = BeautifulSoup(html, "html.parser")
+    print(soup)
+    # dic['current-mouth'] = soup("span",{"class":"current-mouth"})[0].text
+    return dic
 
 
 def getRanking(OJ):
@@ -157,7 +161,7 @@ def getSearch(username):
     try:
         src = soup("table", {"class": "dl-table"})[1]("tr")
         res["atcoder"] = [
-            soup("a", {"class": "username"})[0].text,  # username
+            username,  # username
             src[0].td.text,  # rank
             src[1].td.text.replace("\n", ""),  # rating
             src[3].td.text  # match
@@ -193,4 +197,4 @@ def getSearch(username):
         pass
     return res
 
-# print(getSearch("zwu2019014737"))
+print(getSearch("zwu_2018010782"))
