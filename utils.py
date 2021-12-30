@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 
 class setting:
     calendar_url = "https://contests.sdutacm.cn/contests.json"
+    atcoder_url = "https://atcoder.jp/ranking"
 
 
 def getHTMLText(url):
@@ -39,22 +40,27 @@ def isChinese(str):
     return False
 
 
-def getCalendar(url):
-    ls = eval(getHTMLText(url))
+def getCalendar():
+    ls = eval(getHTMLText(setting.calendar_url))
     return ls
-    # for i in range(len(ls)):
-    #     dic = ls[i]
-    #
-    #     t.add_row(
-    #         [
-    #             i + 1,
-    #             dic["name"],
-    #             dic["source"],
-    #             dic["start_time"].replace("T", " ").replace("+", "~"),
-    #             dic["end_time"].replace("T", " ").replace("+", "~"),
-    #             dic["link"]
-    #         ]
-    #     )
-    # return t.draw()
 
-# print(Calendar.getCalendar())
+
+def getRanking(OJ="wlacm"):
+    ls = []
+    if OJ == "atcoder":
+        html = getHTMLText(setting.atcoder_url)
+        soup = BeautifulSoup(html, "html.parser")
+        for i in range(len(soup.tbody("tr"))):
+            frag = soup.tbody("tr")[i]("td")
+            ls.append(
+                [
+                    frag[0].text,
+                    frag[1]("a")[1].text,
+                    frag[1]("a")[2].text,
+                    frag[3].text
+                ]
+            )
+    return ls
+
+
+# print(getRanking("atcoder"))
