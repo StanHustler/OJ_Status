@@ -47,13 +47,21 @@ def displayRanking():
     viewRanking.minsize(800, 433)
     viewRanking.maxsize(800, 433)
 
+    tree = ttk.Treeview(viewRanking, show="headings", height=18, columns=("#1", "#2", "#3", "#4"))
+    tree.column("#1", width=50, anchor="center")
+    tree.column("#2", width=100, anchor="center")
+    tree.column("#3", width=600, anchor="center")
+    tree.column("#4", width=50, anchor="center")
+
     def dis_atcoder():
-        tree = ttk.Treeview(viewRanking, show="headings", height=18, columns=("#1", "#2", "#3", "#4"))
-        tree.column("#1", width=50, anchor="center")
-        tree.column("#2", width=100, anchor="center")
-        tree.column("#3", width=600, anchor="center")
-        tree.column("#4", width=50, anchor="center")
-        tree.heading("#1", text="ID")
+        try:
+            x = tree.get_children()
+            for item in x:
+                tree.delete(item)
+        except:
+            pass
+
+        tree.heading("#1", text="No")
         tree.heading("#2", text="Name")
         tree.heading("#3", text="University")
         tree.heading("#4", text="Rating")
@@ -63,8 +71,25 @@ def displayRanking():
             tree.insert("", "end", values=(lls[0], lls[1], lls[2], lls[3]))
         tree.pack()
 
+    def dis_wlacm():
+        try:
+            x = tree.get_children()
+            for item in x:
+                tree.delete(item)
+        except:
+            pass
+        tree.heading("#1", text="No")
+        tree.heading("#2", text="Stu Id")
+        tree.heading("#3", text="User name")
+        tree.heading("#4", text="AC")
+        ls = utils.getRanking("wlacm")
+        for i in range(30):
+            lls = ls[i]
+            tree.insert("", "end", values=(lls[0], lls[1], lls[2], lls[3]))
+        tree.pack()
+    dis_wlacm()
     Button(viewRanking, text="atcoder", width=30, height=2, command=dis_atcoder).place(x=0, y=387)
-    # Button(viewRanking, text="cf", width=10, height=2, command="1").place(x=220, y=387)
+    Button(viewRanking, text="wlacm", width=10, height=2, command=dis_wlacm).place(x=220, y=387)
     # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
     # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
     # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
