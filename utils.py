@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 
 class setting:
@@ -16,6 +17,7 @@ class setting:
     # nowcoder_AC = "https://ac.nowcoder.com/acm/contest/26012#submit"
     ##search##
     atcoder_search = "https://atcoder.jp/users/"
+    wlacm_search = "http://wlacm.com/userinfo.php?user="
 
 
 def getHTMLText(url, *cookie):
@@ -156,12 +158,26 @@ def getSearch(username):
         res["atcoder"] = [
             soup("a", {"class": "username"})[0].text,  # username
             src[0].td.text,  # rank
-            src[1].td.text.replace("\n",""),  # rating
+            src[1].td.text.replace("\n", ""),  # rating
             src[3].td.text  # match
         ]
     except:
         pass
 
+    # wlacm
+    html = getHTMLText(setting.wlacm_search + "".join(re.findall(r'\d+', username)))
+    soup = BeautifulSoup(html, "html.parser")
+    try:
+        src = soup("table", {"id": "statics"})[0]("tr")
+        res["wlacm"] = [
+            soup.caption.text.split("--")[1],  # username
+            re.search(r'>[0-9]{1,}<', str(src[0]('td')[1])).group(0)[1:-1],  # rank
+            src[1]('td')[1].text.strip(),  # solved
+            src[2]('td')[1].text,  # submit
+            src[3]('td')[1].text  # AC
+        ]
+    except:
+        pass
 
     return res
 

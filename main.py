@@ -178,16 +178,16 @@ def displayAC():
 def displaySearch():
     viewSearch = Tk()
     viewSearch.title("Search")
-    viewSearch.geometry('553x433')
-    viewSearch.minsize(553, 433)
-    viewSearch.maxsize(553, 433)
+    viewSearch.geometry('600x433')
+    viewSearch.minsize(600, 433)
+    viewSearch.maxsize(600, 433)
 
     def onClick():
         res=utils.getSearch(E1.get())
         if "atcoder" in res.keys():
             tree = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4","#5"))
             tree.column("#1", width=100, anchor="center")
-            tree.column("#2", width=100, anchor="center")
+            tree.column("#2", width=200, anchor="center")
             tree.column("#3", width=100, anchor="center")
             tree.column("#4", width=100, anchor="center")
             tree.column("#5", width=100, anchor="center")
@@ -199,12 +199,32 @@ def displaySearch():
             tree.insert("", "end", values=(['atcoder']+res["atcoder"]))
         else:
             tree = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1"))
-            tree.column("#1", width=500, anchor="center")
+            tree.column("#1", width=600, anchor="center")
             tree.heading("#1", text="atcoder")
             tree.insert("", "end", values=(['No Result']))
         tree.pack()
 
-
+        if "wlacm" in res.keys():
+            tree1 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4", "#5","#6"))
+            tree1.column("#1", width=100, anchor="center")
+            tree1.column("#2", width=100, anchor="center")
+            tree1.column("#3", width=100, anchor="center")
+            tree1.column("#4", width=100, anchor="center")
+            tree1.column("#5", width=100, anchor="center")
+            tree1.column("#6", width=100, anchor="center")
+            tree1.heading("#1", text="OJ")
+            tree1.heading("#2", text="username")
+            tree1.heading("#3", text="rank")
+            tree1.heading("#4", text="solved")
+            tree1.heading("#5", text="submit")
+            tree1.heading("#6", text="AC")
+            tree1.insert("", "end", values=(['wlacm'] + res["wlacm"]))
+        else:
+            tree1 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1"))
+            tree1.column("#1", width=600, anchor="center")
+            tree1.heading("#1", text="wlacm")
+            tree1.insert("", "end", values=(['No Result']))
+        tree1.pack()
 
 
 
