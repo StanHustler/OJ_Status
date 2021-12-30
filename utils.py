@@ -3,10 +3,14 @@ from bs4 import BeautifulSoup
 
 
 class setting:
+    ##calendar##
     calendar_url = "https://contests.sdutacm.cn/contests.json"
+    ##rank##
     atcoder_rank = "https://atcoder.jp/ranking"
     wlacm_rank = "http://wlacm.com/ranklist.php"
     nowcoder_rank = "https://ac.nowcoder.com/acm/contest/rating-index"
+    ##AC##
+    wlacm_AC="http://wlacm.com/status.php?&jresult=4"
 
 
 def getHTMLText(url):
@@ -47,7 +51,7 @@ def getCalendar():
     return ls
 
 
-def getRanking(OJ="wlacm"):
+def getRanking(OJ):
     ls = []
     if OJ == "atcoder":
         html = getHTMLText(setting.atcoder_rank)
@@ -91,5 +95,23 @@ def getRanking(OJ="wlacm"):
 
     return ls
 
+def getAC(OJ):
+    ls=[]
+    if OJ=="wlacm":
+        html = getHTMLText(setting.wlacm_AC)
+        soup = BeautifulSoup(html, "html.parser")
+        for i in range(len(soup.tbody("tr"))):
+            frag = soup.tbody("tr")[i]("td")
+            ls.append(
+                [
+                    frag[0].text.strip(),
+                    frag[1].text,
+                    frag[4].text,
+                    frag[6].text,
+                    frag[7].text,
+                    frag[8].text
+                ]
+            )
+    return ls
 
-# print(getRanking("nowcoder"))
+# print(getAC("wlacm"))

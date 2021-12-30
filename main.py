@@ -107,12 +107,56 @@ def displayRanking():
 
     dis_wlacm()
 
-    Button(viewRanking, text="wlacm", width=30, height=2,relief=GROOVE, command=dis_wlacm).place(x=0, y=387)
-    Button(viewRanking, text="atcoder", width=30, height=2,relief=GROOVE, command=dis_atcoder).place(x=220, y=387)
-    Button(viewRanking, text="nowcoder", width=30, height=2,relief=GROOVE, command=dis_nowcoder).place(x=440, y=387)
-    # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
-    # Button(viewRanking, text="atcoder", width=30, height=2, command="1").place(x = 0,y=387).pack()
+    Button(viewRanking, text="wlacm", width=30, height=2, relief=GROOVE, command=dis_wlacm).place(x=0, y=387)
+    Button(viewRanking, text="atcoder", width=30, height=2, relief=GROOVE, command=dis_atcoder).place(x=220, y=387)
+    Button(viewRanking, text="nowcoder", width=30, height=2, relief=GROOVE, command=dis_nowcoder).place(x=440, y=387)
     viewRanking.mainloop()
+
+def displayAC():
+    viewRanking = Tk()
+    viewRanking.title("Ranking Board")
+    viewRanking.geometry('553x433')
+    viewRanking.minsize(553, 433)
+    viewRanking.maxsize(553, 433)
+
+    tree = ttk.Treeview(viewRanking, show="headings", height=18, columns=("#1", "#2", "#3", "#4","#5","#6"))
+    tree.column("#1", width=50, anchor="center")
+    tree.column("#2", width=100, anchor="center")
+    tree.column("#3", width=100, anchor="center")
+    tree.column("#4", width=50, anchor="center")
+    tree.column("#5", width=100, anchor="center")
+    tree.column("#6", width=150, anchor="center")
+
+
+    def dis_wlacm():
+        try:
+            x = tree.get_children()
+            for item in x:
+                tree.delete(item)
+        except:
+            pass
+        tree.heading("#1", text="No")
+        tree.heading("#2", text="Stu Id")
+        tree.heading("#3", text="length")
+        tree.heading("#4", text="Language")
+        tree.heading("#5", text="Size")
+        tree.heading("#6", text="Time")
+        ls = utils.getAC("wlacm")
+        for i in range(20):
+            lls = ls[i]
+            tree.insert("", "end", values=(lls[0], lls[1], lls[2], lls[3],lls[4],lls[5]))
+        tree.pack()
+
+
+    dis_wlacm()
+
+    Button(viewRanking, text="wlacm", width=30, height=2, relief=GROOVE, command=dis_wlacm).place(x=0, y=387)
+    viewRanking.mainloop()
+
+
+
+
+
 
 
 def main():
@@ -125,6 +169,8 @@ def main():
            command=displayCalendar).pack()
     Button(window, text="Ranking Board", width=30, height=2, relief=GROOVE,
            command=displayRanking).pack()
+    Button(window, text="AC status", width=30, height=2, relief=GROOVE,
+           command=displayAC).pack()
     window.mainloop()
 
 
