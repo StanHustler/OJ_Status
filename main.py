@@ -10,7 +10,7 @@ def displayCalendar():
     viewCalendar = Tk()
     viewCalendar.title("Competition Calendar")
     viewCalendar.geometry('1083x427')
-    tree = ttk.Treeview(viewCalendar, show="headings", height=20,
+    tree = ttk.Treeview(viewCalendar, show="headings", height=18,
                         columns=("id", "name", "source", "start_time", "end_time", "link"))
     tree.column("id", width=40, anchor="center")
     tree.column("name", width=350, anchor="center")
@@ -25,20 +25,63 @@ def displayCalendar():
     tree.heading("start_time", text="Start time")
     tree.heading("end_time", text="End time")
     tree.heading("link", text="Link")
-    calendar = utils.Calendar(utils.nowMonth(),utils.timeStamp())
-    ls=calendar.getCalendar()
-    for i in range(len(ls)):
-        dic = ls[i]
 
-        tree.insert("", "end", values=(
-            i + 1,
-            dic["contestName"],
-            dic["ojName"],
-            utils.timestamp2time(str(dic["startTime"])[:-3]),
-            utils.timestamp2time(str(dic["endTime"])[:-3]),
-            dic["link"].split("?")[0]
-        ))
+    calendar = utils.Calendar(utils.nowMonth(), utils.timeStamp())
+
+    ls = calendar.getCalendar()
+
+    def plant(ls):
+
+        try:
+            x = tree.get_children()
+
+            for item in x:
+                tree.delete(item)
+        except:
+            pass
+
+        for i in range(len(ls)):
+            dic = ls[i]
+
+            tree.insert("", "end", values=(
+                i + 1,
+                dic["contestName"],
+                dic["ojName"],
+                utils.timestamp2time(str(dic["startTime"])[:-3]),
+                utils.timestamp2time(str(dic["endTime"])[:-3]),
+                dic["link"].split("?")[0]
+            ))
+
+    def prev():
+        raw_date = calendar.date.split("-")
+        rawY = raw_date[0]
+        rawM = raw_date[1]
+        if rawM == "1":
+            rawM = "12"
+            rawY = str(int(rawY) - 1)
+        calendar.date = rawY + "-" + str(int(rawM) - 1)
+        calendar.second = utils.timeStamp()
+
+        ls = calendar.getCalendar()
+        plant(ls)
+
+    def next():
+        raw_date = calendar.date.split("-")
+        rawY = raw_date[0]
+        rawM = raw_date[1]
+        if rawM == "12":
+            rawM = "1"
+            rawY = str(int(rawY) + 1)
+        calendar.date = rawY + "-" + str(int(rawM) + 1)
+        calendar.second = utils.timeStamp()
+
+        ls = calendar.getCalendar()
+        plant(ls)
+
+    plant(ls)
     tree.pack()
+    Button(viewCalendar, text="Prev", height=2, relief=GROOVE, command=prev).place(x=0, y=387, width=542)
+    Button(viewCalendar, text="Prev", width=28, height=2, relief=GROOVE, command=next).place(x=542, y=387, width=542)
     viewCalendar.mainloop()
 
 
@@ -185,10 +228,10 @@ def displaySearch():
     viewSearch.maxsize(600, 185)
 
     def onClick():
-        res=utils.getSearch(E1.get().strip())
+        res = utils.getSearch(E1.get().strip())
         print(E1.get())
         if "atcoder" in res.keys():
-            tree1 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4","#5"))
+            tree1 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4", "#5"))
             tree1.column("#1", width=100, anchor="center")
             tree1.column("#2", width=200, anchor="center")
             tree1.column("#3", width=100, anchor="center")
@@ -199,7 +242,7 @@ def displaySearch():
             tree1.heading("#3", text="rank")
             tree1.heading("#4", text="rating")
             tree1.heading("#5", text="match")
-            tree1.insert("", "end", values=(['atcoder']+res["atcoder"]))
+            tree1.insert("", "end", values=(['atcoder'] + res["atcoder"]))
         else:
             tree1 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1"))
             tree1.column("#1", width=600, anchor="center")
@@ -208,7 +251,7 @@ def displaySearch():
         tree1.pack()
 
         if "wlacm" in res.keys():
-            tree2 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4", "#5","#6"))
+            tree2 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4", "#5", "#6"))
             tree2.column("#1", width=100, anchor="center")
             tree2.column("#2", width=100, anchor="center")
             tree2.column("#3", width=100, anchor="center")
@@ -229,7 +272,6 @@ def displaySearch():
             tree2.insert("", "end", values=(['No Result']))
         tree2.pack()
 
-
         if "codeforces" in res.keys():
             tree3 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4"))
             tree3.column("#1", width=100, anchor="center")
@@ -248,9 +290,8 @@ def displaySearch():
             tree3.insert("", "end", values=(['No Result']))
         tree3.pack()
 
-
     E1 = Entry(viewSearch)
-    E1.place(x=0, y=141,width=400, height=47)
+    E1.place(x=0, y=141, width=400, height=47)
     Button(viewSearch, text="Search", width=30, height=2, relief=GROOVE, command=onClick).place(x=400, y=141)
     viewSearch.mainloop()
 

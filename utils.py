@@ -84,6 +84,7 @@ class Calendar:
 
     def getCalendar(self):
         html = getHTMLText(setting.calendar_url + self.date+"&_="+self.second)
+        print(setting.calendar_url + self.date+"&_="+self.second)
         data=json.loads(html)['data']
         return data
 
