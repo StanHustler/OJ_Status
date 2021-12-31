@@ -4,6 +4,7 @@ import re
 import datetime
 import time
 import json
+import xlwt
 
 
 class setting:
@@ -75,6 +76,14 @@ def timeStamp():
     second = str(second).replace(".", "")
     return second
 
+def exportExcel(ls,name):
+    workbook = xlwt.Workbook()
+    worksheet = workbook.add_sheet(name)
+    for i in range(len(ls)):
+        for j in range(len(ls[i].values())):
+            lls=list(ls[i].values())
+            worksheet.write(i, j, lls[j])
+    workbook.save('C:\\Users\\Stan\\Desktop\\'+name+ '.xls')
 
 class Calendar:
 

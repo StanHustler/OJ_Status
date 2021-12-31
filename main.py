@@ -80,8 +80,9 @@ def displayCalendar():
 
     plant(ls)
     tree.pack()
-    Button(viewCalendar, text="Prev", height=2, relief=GROOVE, command=prev).place(x=0, y=387, width=542)
-    Button(viewCalendar, text="Prev", width=28, height=2, relief=GROOVE, command=next).place(x=542, y=387, width=542)
+    Button(viewCalendar, text="Prev", height=2, relief=GROOVE, command=prev).place(x=0, y=387, width=361)
+    Button(viewCalendar, text="Export", height=2, relief=GROOVE, command=utils.exportExcel(calendar.getCalendar(),"calendar")).place(x=361, y=387, width=361)
+    Button(viewCalendar, text="Prev", width=28, height=2, relief=GROOVE, command=next).place(x=722, y=387, width=361)
     viewCalendar.mainloop()
 
 
@@ -229,7 +230,8 @@ def displaySearch():
 
     def onClick():
         res = utils.getSearch(E1.get().strip())
-        print(E1.get())
+        print(E1.get().strip())
+        print(res)
         if "atcoder" in res.keys():
             tree1 = ttk.Treeview(viewSearch, show="headings", height=1, columns=("#1", "#2", "#3", "#4", "#5"))
             tree1.column("#1", width=100, anchor="center")
